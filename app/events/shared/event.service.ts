@@ -11,12 +11,21 @@ export class EventService{
  getEvent(id: number){
    return EVENTS.find(event => event.id === id);
  }
+ saveEvent(event:IEvent){
+   event.id=999;
+   event.sessions = [];
+   EVENTS.push(event);
+ }
+ updateEvent(event:IEvent){
+   let index = EVENTS.findIndex(x => x.id == event.id)
+   EVENTS[index] = event
+ }
 }
 
 const EVENTS: IEvent[] = [
     {
       id: 1,
-      name: 'Angular Connect by Lewis',
+      name: 'Angular Connect',
       date: new Date('9/26/2036'),
       time: '10:00 am',
       price: 599.99,

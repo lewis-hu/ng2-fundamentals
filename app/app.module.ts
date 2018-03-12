@@ -6,7 +6,10 @@ import {
     EventService,
     EventDetailsComponent,
     EventRouteActivator,
-    EventListResolver
+    EventListResolver,
+    CreateSessionComponent,
+    SessionListComponent,
+    DurationPipe
 } from './events/index'
 import { EventsAppComponent } from './events-app.component';
 import { NavBarComponent } from './nav/navbar.component';
@@ -15,10 +18,15 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { CreateEventComponent } from './events/create-event-component';
 import { Error404Component } from './errors/404.components';
+import { AuthService } from './user/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CollapsibleWellComponent } from './common/collapsible-well.component';
 
 @NgModule({
     imports: [
         BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
         RouterModule.forRoot(appRoutes)
     ],
     declarations: [
@@ -26,9 +34,13 @@ import { Error404Component } from './errors/404.components';
         EventsListComponent,
         EventThumbnailComponent,
         EventDetailsComponent,
+        CreateSessionComponent,
         NavBarComponent,
         CreateEventComponent,
-        Error404Component
+        SessionListComponent,
+        Error404Component,
+        CollapsibleWellComponent,
+        DurationPipe
     ],
     providers: [
         EventService, 
@@ -38,7 +50,8 @@ import { Error404Component } from './errors/404.components';
         {
             provide: 'canDeactivateCreateEvent',
             useValue: checkDirtyState
-        }
+        },
+        AuthService
     ],
     bootstrap: [EventsAppComponent]
 })
@@ -49,5 +62,5 @@ function checkDirtyState(component: CreateEventComponent){
     if(component.isDirty){
         return window.confirm('You have not saved this event, do you still want to cancel?')
     }
-    return false;
+    return true;
 }
